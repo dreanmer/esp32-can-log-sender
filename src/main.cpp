@@ -9,7 +9,7 @@ void setup()
 
     Serial.println("============ CAN SENDER - ESP32-C6 ============");
 
-    CAN0.setCANPins(GPIO_NUM_2, GPIO_NUM_21);
+    CAN0.setCANPins(GPIO_NUM_21, GPIO_NUM_2);
     CAN0.begin(500000);
 
     Serial.println("CAN inicializado! Aguardando dados via Serial...");
