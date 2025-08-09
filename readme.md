@@ -10,7 +10,7 @@ Just save your log captured using SavvyCan and run this script.
 
 ```bash
 # default params
-python3 replay_log.py -l /data/log.csv -p /dev/ttyUSB0
+python3 replay_log.py -l data/log.csv -p /dev/ttyACM0
 ```
 
 Tip: dont forget to set the correct can bus speed and correct pins of your hardware in [main.cpp](/src/main.cpp)
