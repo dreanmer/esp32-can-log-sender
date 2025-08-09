@@ -1,3 +1,4 @@
+import argparse
 
 #!/usr/bin/env python3
 import serial
@@ -14,7 +15,7 @@ class CanLogReplayer:
         self.running = True
         self.auto_adjust = True
         self.adjustment_interval = 1000  # Ajustar a cada 1000 mensagens
-        self.max_speed_factor = 5.0  # Velocidade máxima
+        self.max_speed_factor = 10.0  # Velocidade máxima
         self.min_speed_factor = 0.1  # Velocidade mínima
 
     def connect(self):
@@ -218,11 +219,20 @@ if __name__ == "__main__":
     replayer = None
     signal.signal(signal.SIGINT, signal_handler)
 
-    # Parâmetros configuráveis
-    LOG_FILE = "data/log.csv"
-    SERIAL_PORT = "/dev/ttyACM1"
-    INITIAL_SPEED = 1.0
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='CAN Log Replayer')
+    parser.add_argument('--log-file', '-l',
+                        default="data/log.csv",
+                        help='Path to the CSV log file (default: data/log.csv)')
+    parser.add_argument('--serial-port', '-p',
+                        default="/dev/ttyACM0",
+                        help='Serial port device (default: /dev/ttyACM0)')
+    parser.add_argument('--speed', '-s',
+                        type=float, default=1.0,
+                        help='Initial playback speed factor (default: 1.0)')
+
+    args = parser.parse_args()
 
     # Cria e executa o reprodutor
-    replayer = CanLogReplayer(port=SERIAL_PORT, speed_factor=INITIAL_SPEED)
-    replayer.replay_log(LOG_FILE)
+    replayer = CanLogReplayer(port=args.serial_port, speed_factor=args.speed)
+    replayer.replay_log(args.log_file)
